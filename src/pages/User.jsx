@@ -14,7 +14,7 @@ const User = () => {
     const [user, setUser] = useState([])
     const [itemDetails, setItemDetails] = useState([])
     const [idOrder, setIdOrder] = useState('')
-
+    const [indexOrder, setIndexOrder] = useState('')
 
     let id = localStorage.getItem('tumi_id')
     useEffect(() => {
@@ -24,6 +24,7 @@ const User = () => {
             // console.log(result.data.data);
         }
         fetchData();
+        
     }, []);
     const [selectedFile, setSelectedFile] = useState(null);
     const [values, setValues] = useState({
@@ -129,12 +130,6 @@ const User = () => {
                     })
                 // console.log(res.data.data);
                 setOrder(res.data.data)
-                console.log(res.data.data)
-                // setDataOrder(res.data.data.itemDetails.reduce(
-                //     (total, item) => total + item.amount * item.price,
-                //     0
-                //   ) )
-
             } catch {
                 console.log('err');
             }
@@ -143,11 +138,13 @@ const User = () => {
     }, [])
 
     const [modelOrder, setModelOrder] = useState(false)
-    const handleSetIdOrder = (id) => {
+    const handleSetIdOrder = (id,index) => {
         setIdOrder(id)
         setModelOrder(true)
+        setIndexOrder(index)
         // console.log(dataOrder);
     }
+console.log(indexOrder);
     const [modelDeleteOrder, setModelDeleteOrder] =useState(false)
     const handleDeleteOrder = async ( ) =>{
         setModelDeleteOrder(true)
@@ -445,7 +442,7 @@ const User = () => {
                         ) : (
 
                             order.map((item, index) => (
-                                <div onClick={() => handleSetIdOrder(index)} key={index} className='bg-green-100 hover:bg-blue-400 hover: cursor-pointer my-1 flex justify-around  w-full h-[40px] items-center'>
+                                <div onClick={() => handleSetIdOrder(item.id, index)} key={index} className='bg-green-100 hover:bg-blue-400 hover: cursor-pointer my-1 flex justify-around  w-full h-[40px] items-center'>
                                     <h2 className='font-bold text-blue-800'>Order {index}</h2>
                                     <div className='font-semibold text-blue-800'>{new Date(item.createdDate).toLocaleString()}</div>
                                     <div className='font-semibold text-blue-800'>{item.paymentMethod}</div>
@@ -485,10 +482,11 @@ const User = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                                // order[idOrder].itemDetails.map((item,index)=>(
-
+                                                // order.map((item,index)=>(
+                                                    
                                                 // ))
-                                                order[idOrder].itemDetails.map((item, index) => (
+                                              
+                                                order[indexOrder].itemDetails.map((item, index) => (
                                                     <tr key={index}>
                                                         <th class="py-2 px-4 border-b font-normal border-gray-300">
                                                             <img className='w-[40px] h-[40px]' src={item.product.images[0]} alt="" />
